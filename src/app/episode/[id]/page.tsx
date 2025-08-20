@@ -1,8 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ArrowLeft, Share2, Download } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { movies } from '@/data/movies';
 import { sampleVideos } from '@/data/videos';
 import SimpleVideoPlayer from '@/components/SimpleVideoPlayer';
@@ -10,18 +10,17 @@ import MovieInfoPanel from '@/components/MovieInfoPanel';
 import EpisodeGrid from '@/components/EpisodeGrid';
 import ResponsiveVideoLayout from '@/components/ResponsiveVideoLayout';
 
-interface EpisodePageProps {
-  params: { id: string };
-}
-
-export default function EpisodePage({ params }: EpisodePageProps) {
+export default function EpisodePage() {
   const router = useRouter();
+  const params = useParams();
+  const id = params.id as string;
+  
   const [currentEpisode, setCurrentEpisode] = useState(1);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
   
   // Find the movie by ID
-  const movie = movies.find(m => m.id === params.id);
+  const movie = movies.find(m => m.id === id);
   
   if (!movie) {
     return (
@@ -40,7 +39,7 @@ export default function EpisodePage({ params }: EpisodePageProps) {
   }
 
   // Find video data
-  const videoData = sampleVideos.find(v => v.id === params.id) || sampleVideos[0];
+  const videoData = sampleVideos.find(v => v.id === id) || sampleVideos[0];
   const totalEpisodes = 74; // Based on NetShort data
 
   const handleEpisodeChange = (episode: number) => {
