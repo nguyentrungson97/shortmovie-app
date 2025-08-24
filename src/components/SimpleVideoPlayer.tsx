@@ -42,6 +42,22 @@ export default function SimpleVideoPlayer({
   const videoRef = useRef<HTMLVideoElement>(null);
   const progressRef = useRef<HTMLDivElement>(null);
 
+  // Reset video player state when video URL changes (new episode)
+  useEffect(() => {
+    if (videoRef.current) {
+      console.log('Video URL changed, resetting player state');
+      // Reset state
+      setIsPlaying(false);
+      setCurrentTime(0);
+      setDuration(0);
+      setIsSeeking(false);
+      
+      // Reset video element
+      videoRef.current.currentTime = 0;
+      videoRef.current.load(); // Reload the video
+    }
+  }, [videoUrl]);
+
   const handlePlayPause = () => {
     if (videoRef.current) {
       if (isPlaying) {

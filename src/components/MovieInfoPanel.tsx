@@ -3,16 +3,28 @@
 import { useState } from 'react';
 import { ExternalLink, Calendar, Clock, User, Star, Play, Download, Share2, Heart, Bookmark } from 'lucide-react';
 import { Movie } from '@/types/movie';
+import EpisodeGrid from './EpisodeGrid';
 import clsx from 'clsx';
 
 interface MovieInfoPanelProps {
   movie: Movie;
   episodeNumber: number;
   totalEpisodes: number;
+  onEpisodeSelect?: (episode: any) => void;
+  showLoginModal?: () => void;
+  hideEpisodeGrid?: boolean; // Add this prop
   className?: string;
 }
 
-export default function MovieInfoPanel({ movie, episodeNumber, totalEpisodes, className }: MovieInfoPanelProps) {
+export default function MovieInfoPanel({ 
+  movie, 
+  episodeNumber, 
+  totalEpisodes, 
+  onEpisodeSelect,
+  showLoginModal,
+  hideEpisodeGrid = false, // Default to false
+  className 
+}: MovieInfoPanelProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -23,6 +35,10 @@ export default function MovieInfoPanel({ movie, episodeNumber, totalEpisodes, cl
 
   const handleBookmark = () => {
     setIsBookmarked(!isBookmarked);
+  };
+
+  const handleEpisodeSelect = (episode: any) => {
+    onEpisodeSelect?.(episode);
   };
 
   return (
@@ -52,14 +68,37 @@ export default function MovieInfoPanel({ movie, episodeNumber, totalEpisodes, cl
                 </span>
               ))}
             </div>
+
+            {/* Movie Metadata - Moved here */}
+            <div className="space-y-3 text-sm">
+              <div className="flex items-center gap-4 text-gray-300">
+                <div className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4" />
+                  <span>2024</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>45 min</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star className="w-4 h-4 text-yellow-500" />
+                  <span>4.8</span>
+                </div>
+              </div>
+              
+              <div className="flex items-center gap-2 text-gray-300">
+                <User className="w-4 h-4" />
+                <span>Directed by Studio XYZ</span>
+              </div>
+            </div>
           </div>
         </div>
         
-        {/* Watch Original Button */}
-        <button className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
+        {/* Watch Original Button - Removed */}
+        {/* <button className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition-colors duration-200">
           <ExternalLink className="w-4 h-4" />
           Watch Original
-        </button>
+        </button> */}
       </div>
 
       {/* Episode Description */}
@@ -128,8 +167,8 @@ export default function MovieInfoPanel({ movie, episodeNumber, totalEpisodes, cl
         </div>
       </div>
 
-      {/* Movie Metadata */}
-      <div className="bg-gray-900 rounded-lg p-6">
+      {/* Movie Metadata - Removed (moved to Episode Header) */}
+      {/* <div className="bg-gray-900 rounded-lg p-6">
         <h3 className="text-lg font-semibold text-white mb-4">Movie Information</h3>
         
         <div className="space-y-3 text-sm">
@@ -153,6 +192,16 @@ export default function MovieInfoPanel({ movie, episodeNumber, totalEpisodes, cl
             <span>Directed by Studio XYZ</span>
           </div>
         </div>
+      </div> */}
+
+      {/* Episode Grid */}
+      <div className="bg-gray-900 rounded-lg p-6 lg:block hidden">
+        <EpisodeGrid
+          episodes={movie.episodes}
+          currentEpisode={episodeNumber}
+          onEpisodeSelect={handleEpisodeSelect}
+          showLoginModal={showLoginModal}
+        />
       </div>
     </div>
   );
