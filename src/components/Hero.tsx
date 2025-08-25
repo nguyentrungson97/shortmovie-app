@@ -107,6 +107,11 @@ export default function Hero() {
               {currentSlide + 1} of {featuredMovies.length}
             </div>
           )}
+          
+          {/* Brand Name */}
+          <div className="mt-4 text-sm text-white/60">
+            Phim Drama
+          </div>
         </div>
       </div>
 

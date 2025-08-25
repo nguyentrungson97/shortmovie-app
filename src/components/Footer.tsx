@@ -8,8 +8,12 @@ export default function Footer() {
           {/* Brand */}
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600" />
-              <span className="text-xl font-bold text-white">NetShort</span>
+              <img 
+                src="/logos/Logo04.png" 
+                alt="Phim Drama Logo" 
+                className="h-10 w-auto"
+              />
+              {/* <span className="text-xl font-bold text-white">Phim Drama</span> */}
             </div>
             <p className="text-gray-400 mb-4">
               Your ultimate destination for short movies and series. Watch the latest trending content anytime, anywhere.
@@ -49,7 +53,7 @@ export default function Footer() {
         <div className="mt-8 border-t border-gray-800 pt-8">
           <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
             <p className="text-gray-400">
-              © 2024 NetShort. Made with <Heart className="inline h-4 w-4 text-red-500" /> for movie lovers.
+              © 2024 Phim Drama. Made with <Heart className="inline h-4 w-4 text-red-500" /> for movie lovers.
             </p>
             <div className="flex items-center gap-4">
               <button className="flex items-center gap-2 text-gray-400 transition-colors hover:text-white">

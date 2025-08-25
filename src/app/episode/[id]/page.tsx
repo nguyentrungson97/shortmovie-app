@@ -53,7 +53,7 @@ export default function EpisodePage() {
     console.log('New episode data:', currentEpisodeData);
     
     // Update page title
-    document.title = `${movie.title} EP ${currentEpisode} - NetShort`;
+    document.title = `${movie.title} EP ${currentEpisode} - Phim Drama`;
     
     // Update URL without page reload
     const newUrl = `/episode/${id}?ep=${currentEpisode}`;
@@ -84,7 +84,7 @@ export default function EpisodePage() {
     if (navigator.share) {
       navigator.share({
         title: `${movie.title} EP ${currentEpisode}`,
-        text: `Watch ${movie.title} Episode ${currentEpisode} on NetShort`,
+        text: `Watch ${movie.title} Episode ${currentEpisode} on Phim Drama`,
         url: window.location.href,
       });
     } else {
@@ -132,6 +132,16 @@ export default function EpisodePage() {
               <ArrowLeft className="h-5 w-5" />
               <span className="hidden sm:inline">Back</span>
             </button>
+            
+            {/* Brand Logo */}
+            <div className="flex items-center gap-2">
+              <img 
+                src="/logos/Logo04.png" 
+                alt="Phim Drama Logo" 
+                className="h-10 w-auto"
+              />
+              {/* <span className="text-lg font-bold text-white">Phim Drama</span> */}
+            </div>
             
             <div className="flex items-center gap-4">
               <button 

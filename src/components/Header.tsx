@@ -100,8 +100,11 @@ export default function Header() {
         <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4">
           {/* Logo */}
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-to-r from-purple-600 to-blue-600" />
-            <span className="text-xl font-bold text-white">NetShort</span>
+          <img 
+                src="/logos/Logo04.png" 
+                alt="Phim Drama Logo" 
+                className="h-10 w-auto"
+              />
           </div>
 
           {/* Navigation */}
@@ -128,7 +131,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search movies..."
-                className="w-64 rounded-full bg-gray-800 px-10 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-64 rounded-full bg-gray-800 px-10 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
 
@@ -210,7 +213,7 @@ export default function Header() {
                     value={loginForm.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -226,24 +229,24 @@ export default function Header() {
                     value={loginForm.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Enter your password"
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <label className="flex items-center">
-                    <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-purple-600 focus:ring-purple-500" />
+                    <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-red-600 focus:ring-red-500" />
                     <span className="text-sm text-gray-300">Remember me</span>
                   </label>
-                  <a href="#" className="text-sm text-purple-400 hover:text-purple-300">
+                  <a href="#" className="text-sm text-red-400 hover:text-red-300">
                     Forgot password?
                   </a>
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                 >
                   Sign In
                 </button>
@@ -289,7 +292,7 @@ export default function Header() {
                     value={signupForm.name}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Enter your full name"
                   />
                 </div>
@@ -305,7 +308,7 @@ export default function Header() {
                     value={signupForm.email}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Enter your email"
                   />
                 </div>
@@ -321,7 +324,7 @@ export default function Header() {
                     value={signupForm.password}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Create a password"
                   />
                 </div>
@@ -337,20 +340,20 @@ export default function Header() {
                     value={signupForm.confirmPassword}
                     onChange={handleInputChange}
                     required
-                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                    className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
                     placeholder="Confirm your password"
                   />
                 </div>
 
                 <div className="flex items-center">
-                  <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-purple-600 focus:ring-purple-500" required />
+                  <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-red-600 focus:ring-red-500" required />
                   <span className="text-sm text-gray-300">
                     I agree to the{' '}
-                    <a href="#" className="text-purple-400 hover:text-purple-300">
+                    <a href="#" className="text-red-400 hover:text-red-300">
                       Terms of Service
                     </a>{' '}
                     and{' '}
-                    <a href="#" className="text-purple-400 hover:text-purple-300">
+                    <a href="#" className="text-red-400 hover:text-red-300">
                       Privacy Policy
                     </a>
                   </span>
@@ -358,7 +361,7 @@ export default function Header() {
 
                 <button
                   type="submit"
-                  className="w-full bg-purple-600 hover:bg-purple-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                 >
                   Create Account
                 </button>
@@ -372,7 +375,7 @@ export default function Header() {
               </span>
               <button
                 onClick={toggleMode}
-                className="text-purple-400 hover:text-purple-300 font-medium"
+                className="text-red-400 hover:text-red-300 font-medium"
               >
                 {isSignupMode ? 'Sign in' : 'Sign up'}
               </button>
