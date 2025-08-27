@@ -1,9 +1,10 @@
 'use client';
 
+import { Movie, Episode } from '@/types/movie';
+import { Heart, Share2, Bookmark, MessageCircle, Calendar, Clock, Star, User, Download } from 'lucide-react';
 import { useState } from 'react';
-import { ExternalLink, Calendar, Clock, User, Star, Play, Download, Share2, Heart, Bookmark } from 'lucide-react';
-import { Movie } from '@/types/movie';
 import EpisodeGrid from './EpisodeGrid';
+import { useLanguage } from '@/contexts/LanguageContext';
 import clsx from 'clsx';
 
 interface MovieInfoPanelProps {
@@ -25,6 +26,7 @@ export default function MovieInfoPanel({
   hideEpisodeGrid = false, // Default to false
   className 
 }: MovieInfoPanelProps) {
+  const { t } = useLanguage();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [isBookmarked, setIsBookmarked] = useState(false);
@@ -78,7 +80,7 @@ export default function MovieInfoPanel({
                 </div>
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
-                  <span>45 min</span>
+                  <span>45 {t('time.minutes')}</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Star className="w-4 h-4 text-yellow-500" />
@@ -88,7 +90,7 @@ export default function MovieInfoPanel({
               
               <div className="flex items-center gap-2 text-gray-300">
                 <User className="w-4 h-4" />
-                <span>Directed by Studio XYZ</span>
+                <span>{t('movie.director')}: Studio XYZ</span>
               </div>
             </div>
           </div>
@@ -103,7 +105,7 @@ export default function MovieInfoPanel({
 
       {/* Episode Description */}
       <div className="bg-gray-900 rounded-lg p-6">
-        <h2 className="text-xl font-bold text-white mb-4">The Hidden Master's Revelation</h2>
+        <h2 className="text-xl font-bold text-white mb-4">{t('episode.episodeDescription')}</h2>
         
         <div className="text-gray-300 leading-relaxed mb-4">
           {isExpanded ? (
@@ -112,7 +114,7 @@ export default function MovieInfoPanel({
                 Yannick Young thought he was just another weak disciple. But when he aces a deadly sect trial, the truth hits—he's anything but ordinary. Jealous rivals, secret mentors, and ancient enemies stand in his way. Is he ready to claim the power he never knew he had?
               </p>
               <p className="mb-3">
-                EP {episodeNumber}: Yannick's humble training with his masters takes a surprising turn when they casually dismiss the powerful Demon Lord as weak, revealing their true strength. As word spreads, major sects scramble to recruit this mysterious master, while Yannick prepares to leave for the Celestial Academy trials with a precious token from his masters.
+                {t('episode.episode')} {episodeNumber}: Yannick's humble training with his masters takes a surprising turn when they casually dismiss the powerful Demon Lord as weak, revealing their true strength. As word spreads, major sects scramble to recruit this mysterious master, while Yannick prepares to leave for the Celestial Academy trials with a precious token from his masters.
               </p>
               <p>
                 What powers does the mysterious jade token hold, and how will it change Yannick's destiny?
@@ -129,7 +131,7 @@ export default function MovieInfoPanel({
           onClick={() => setIsExpanded(!isExpanded)}
           className="text-purple-400 hover:text-purple-300 text-sm font-medium transition-colors duration-200"
         >
-          {isExpanded ? 'Show less' : 'Read more'}
+          {isExpanded ? t('common.view') + ' ' + t('common.less') : t('common.view') + ' ' + t('common.more')}
         </button>
       </div>
 
@@ -145,24 +147,24 @@ export default function MovieInfoPanel({
             }`}
           >
             <Heart className={`w-5 h-5 ${isLiked ? 'fill-current' : ''}`} />
-            <span>Like</span>
+            <span>{t('actions.like')}</span>
           </button>
           
           <button className="bg-gray-800 text-gray-300 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
             <Bookmark className="w-5 h-5" />
-            <span>Save</span>
+            <span>{t('actions.bookmark')}</span>
           </button>
           
           <button className="bg-gray-800 text-gray-300 hover:bg-gray-700 px-4 py-2 rounded-lg transition-colors duration-200 flex items-center gap-2">
             <Share2 className="w-5 h-5" />
-            <span>Share</span>
+            <span>{t('actions.share')}</span>
           </button>
         </div>
         
         <div className="flex flex-col gap-3">
           <button className="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 px-4 rounded-lg transition-colors duration-200 flex items-center justify-center gap-2">
             <Download className="w-4 h-4" />
-            Download Episode
+            {t('actions.download')} {t('episode.episode')}
           </button>
         </div>
       </div>

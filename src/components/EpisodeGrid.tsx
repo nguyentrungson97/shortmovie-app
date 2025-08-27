@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Lock, Play, User } from 'lucide-react';
+import { Lock, Play } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Episode } from '@/types/movie';
 import clsx from 'clsx';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface EpisodeGridProps {
   episodes: Episode[];
@@ -17,23 +18,17 @@ interface EpisodeGridProps {
 export default function EpisodeGrid({ 
   episodes, 
   currentEpisode, 
-  onEpisodeSelect,
+  onEpisodeSelect, 
   showLoginModal,
   className 
 }: EpisodeGridProps) {
   const { isLoggedIn } = useAuth();
+  const { t } = useLanguage();
   const [currentPage, setCurrentPage] = useState(1);
   const episodesPerPage = 12;
-  const totalPages = Math.ceil(episodes.length / episodesPerPage);
-  
-  const startIndex = (currentPage - 1) * episodesPerPage;
-  const endIndex = startIndex + episodesPerPage;
-  const currentEpisodes = episodes.slice(startIndex, endIndex);
 
   const handleEpisodeClick = (episode: Episode) => {
     if (episode.isLocked && !isLoggedIn) {
-      // Show login popup instead of alert
-      console.log('Locked episode clicked, showing login modal');
       if (showLoginModal) {
         showLoginModal();
       }
@@ -42,20 +37,20 @@ export default function EpisodeGrid({
     onEpisodeSelect(episode);
   };
 
-  const goToPage = (page: number) => {
-    setCurrentPage(page);
-  };
+  const totalPages = Math.ceil(episodes.length / episodesPerPage);
+  const startIndex = (currentPage - 1) * episodesPerPage;
+  const endIndex = startIndex + episodesPerPage;
+  const currentEpisodes = episodes.slice(startIndex, endIndex);
 
   return (
     <div className={className}>
       <div className="flex items-center justify-between mb-4">
-        <h2 className="text-xl font-bold text-white">Episodes</h2>
+        <h2 className="text-xl font-bold text-white">{t('episode.episodes')}</h2>
         <span className="text-sm text-gray-400">
           {currentEpisode} of {episodes.length}
         </span>
       </div>
-      
-      {/* Episode Grid */}
+
       <div className="grid grid-cols-6 gap-2 mb-4">
         {currentEpisodes.map((episode) => (
           <button
@@ -71,8 +66,7 @@ export default function EpisodeGrid({
             )}
             disabled={episode.isLocked && !isLoggedIn}
           >
-            {/* Episode Number */}
-            <span className="block">{episode.number}</span>
+            {episode.number}
             
             {/* Lock Icon for Locked Episodes */}
             {episode.isLocked && !isLoggedIn && (
@@ -90,12 +84,12 @@ export default function EpisodeGrid({
           </button>
         ))}
       </div>
-      
+
       {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
           <button
-            onClick={() => goToPage(Math.max(1, currentPage - 1))}
+            onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
             disabled={currentPage === 1}
             className="px-3 py-1 text-sm bg-gray-800 text-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700"
           >
@@ -105,7 +99,7 @@ export default function EpisodeGrid({
             Page {currentPage} of {totalPages}
           </span>
           <button
-            onClick={() => goToPage(Math.min(totalPages, currentPage + 1))}
+            onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
             disabled={currentPage >= totalPages}
             className="px-3 py-1 text-sm bg-gray-800 text-gray-300 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-700"
           >
@@ -113,7 +107,7 @@ export default function EpisodeGrid({
           </button>
         </div>
       )}
-      
+
       {/* Login Reminder for Locked Episodes */}
       {!isLoggedIn && episodes.some(ep => ep.isLocked) && (
         <div className="mt-4 p-3 bg-gray-800 rounded-lg border border-gray-700">
@@ -128,14 +122,12 @@ export default function EpisodeGrid({
             {/* Login Button */}
             <button
               onClick={() => {
-                console.log('Login button clicked, showing login modal');
                 if (showLoginModal) {
                   showLoginModal();
                 }
               }}
               className="flex items-center gap-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-6 py-2 rounded-lg transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              <User className="w-4 h-4" />
               Login to Unlock
             </button>
           </div>

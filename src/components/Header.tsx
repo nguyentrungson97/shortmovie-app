@@ -1,13 +1,16 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { Search, Menu, Globe, User, X } from 'lucide-react';
+import { Search, User, Menu, Globe, X } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import LanguageSelector from './LanguageSelector';
 
 export default function Header() {
+  const { isLoggedIn, currentUser, login, logout } = useAuth();
+  const { t } = useLanguage();
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isSignupMode, setIsSignupMode] = useState(false);
-  const { isLoggedIn, currentUser, login, logout } = useAuth();
   const [loginForm, setLoginForm] = useState({
     email: '',
     password: ''
@@ -108,18 +111,12 @@ export default function Header() {
           </div>
 
           {/* Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <a href="#" className="text-gray-300 transition-colors hover:text-white">
-              Home
+          <nav className="hidden md:flex items-center gap-10">
+            <a href="#" className="text-gray-300 transition-colors hover:text-white whitespace-nowrap">
+              {t('navigation.home')}
             </a>
-            <a href="#" className="text-gray-300 transition-colors hover:text-white">
-              Genres
-            </a>
-            <a href="#" className="text-gray-300 transition-colors hover:text-white">
-              Download
-            </a>
-            <a href="#" className="text-gray-300 transition-colors hover:text-white">
-              Blog
+            <a href="#" className="text-gray-300 transition-colors hover:text-white whitespace-nowrap">
+              {t('navigation.genres')}
             </a>
           </nav>
 
@@ -130,29 +127,32 @@ export default function Header() {
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
               <input
                 type="text"
-                placeholder="Search movies..."
+                placeholder={t('header.searchPlaceholder')}
                 className="w-64 rounded-full bg-gray-800 px-10 py-2 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500"
               />
             </div>
+
+            {/* Language Selector */}
+            <LanguageSelector />
 
             {/* Login Button / User Info */}
             {!isLoggedIn ? (
               <button
                 onClick={() => setIsLoginOpen(true)}
-                className="hidden md:flex items-center gap-2 rounded-lg bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 transition-colors duration-200"
+                className="hidden md:flex items-center gap-2 rounded-lg bg-red-600 hover:bg-red-700 text-white px-4 py-2 transition-colors duration-200"
               >
                 <User className="h-4 w-4" />
-                <span>Login</span>
+                <span>{t('header.login')}</span>
               </button>
             ) : (
               <div className="hidden md:flex items-center gap-3">
                 {/* Beautiful Welcome Label */}
                 <div className="relative group">
-                  <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-blue-500 rounded-lg blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                  <div className="relative bg-gradient-to-r from-purple-600 via-pink-600 to-blue-600 rounded-lg px-4 py-2 text-white shadow-lg">
+                  <div className="absolute inset-0 bg-gradient-to-r from-red-500 via-orange-500 to-yellow-500 rounded-lg blur-sm opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                  <div className="relative bg-gradient-to-r from-red-600 via-orange-600 to-yellow-600 rounded-lg px-4 py-2 text-white shadow-lg">
                     <div className="flex items-center gap-2">
                       <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
-                      <span className="text-sm font-medium">Welcome back, {currentUser}!</span>
+                      <span className="text-sm font-medium">{t('header.welcome')}, {currentUser}!</span>
                       <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
                     </div>
                   </div>
@@ -163,16 +163,10 @@ export default function Header() {
                   className="flex items-center gap-2 rounded-lg bg-gray-600 hover:bg-gray-700 text-white px-3 py-2 transition-colors duration-200 text-sm"
                 >
                   <User className="h-4 w-4" />
-                  <span>Logout</span>
+                  <span>{t('header.logout')}</span>
                 </button>
               </div>
             )}
-
-            {/* Language Selector */}
-            <button className="flex items-center gap-2 rounded-lg bg-gray-800 px-3 py-2 text-gray-300 transition-colors hover:bg-gray-700 hover:text-white">
-              <Globe className="h-4 w-4" />
-              <span className="hidden sm:inline">English</span>
-            </button>
 
             {/* Mobile Menu */}
             <button className="md:hidden">
@@ -189,7 +183,7 @@ export default function Header() {
             {/* Modal Header */}
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-white">
-                {isSignupMode ? 'Sign Up' : 'Login'}
+                {isSignupMode ? t('auth.signup') : t('auth.login')}
               </h2>
               <button
                 onClick={closeModal}
@@ -204,7 +198,7 @@ export default function Header() {
               <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="login-email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email
+                    {t('auth.email')}
                   </label>
                   <input
                     type="email"
@@ -214,13 +208,13 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter your email"
+                    placeholder={t('auth.email')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="login-password" className="block text-sm font-medium text-gray-300 mb-2">
-                    Password
+                    {t('auth.password')}
                   </label>
                   <input
                     type="password"
@@ -230,17 +224,17 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter your password"
+                    placeholder={t('auth.password')}
                   />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <label className="flex items-center">
                     <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-red-600 focus:ring-red-500" />
-                    <span className="text-sm text-gray-300">Remember me</span>
+                    <span className="text-sm text-gray-300">{t('auth.rememberMe')}</span>
                   </label>
                   <a href="#" className="text-sm text-red-400 hover:text-red-300">
-                    Forgot password?
+                    {t('auth.forgotPassword')}
                   </a>
                 </div>
 
@@ -248,7 +242,7 @@ export default function Header() {
                   type="submit"
                   className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                 >
-                  Sign In
+                  {t('auth.signIn')}
                 </button>
 
                 {/* Divider */}
@@ -273,7 +267,7 @@ export default function Header() {
                     <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
                     <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
                   </svg>
-                  Continue with Google
+                  {t('auth.continueWithGoogle')}
                 </button>
               </form>
             )}
@@ -283,7 +277,7 @@ export default function Header() {
               <form onSubmit={handleSignupSubmit} className="space-y-4">
                 <div>
                   <label htmlFor="signup-name" className="block text-sm font-medium text-gray-300 mb-2">
-                    Full Name
+                    {t('auth.fullName')}
                   </label>
                   <input
                     type="text"
@@ -293,13 +287,13 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter your full name"
+                    placeholder={t('auth.fullName')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="signup-email" className="block text-sm font-medium text-gray-300 mb-2">
-                    Email
+                    {t('auth.email')}
                   </label>
                   <input
                     type="email"
@@ -309,13 +303,13 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Enter your email"
+                    placeholder={t('auth.email')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="signup-password" className="block text-sm font-medium text-gray-300 mb-2">
-                    Password
+                    {t('auth.password')}
                   </label>
                   <input
                     type="password"
@@ -325,13 +319,13 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Create a password"
+                    placeholder={t('auth.password')}
                   />
                 </div>
 
                 <div>
                   <label htmlFor="signup-confirm-password" className="block text-sm font-medium text-gray-300 mb-2">
-                    Confirm Password
+                    {t('auth.confirmPassword')}
                   </label>
                   <input
                     type="password"
@@ -341,20 +335,20 @@ export default function Header() {
                     onChange={handleInputChange}
                     required
                     className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    placeholder="Confirm your password"
+                    placeholder={t('auth.confirmPassword')}
                   />
                 </div>
 
                 <div className="flex items-center">
                   <input type="checkbox" className="mr-2 rounded border-gray-600 bg-gray-800 text-red-600 focus:ring-red-500" required />
                   <span className="text-sm text-gray-300">
-                    I agree to the{' '}
+                    {t('auth.agreeToTerms')}{' '}
                     <a href="#" className="text-red-400 hover:text-red-300">
-                      Terms of Service
+                      {t('auth.termsOfService')}
                     </a>{' '}
-                    and{' '}
+                    {t('auth.and')}{' '}
                     <a href="#" className="text-red-400 hover:text-red-300">
-                      Privacy Policy
+                      {t('auth.privacyPolicy')}
                     </a>
                   </span>
                 </div>
@@ -363,7 +357,7 @@ export default function Header() {
                   type="submit"
                   className="w-full bg-red-600 hover:bg-red-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium"
                 >
-                  Create Account
+                  {t('auth.createAccount')}
                 </button>
               </form>
             )}
@@ -371,13 +365,13 @@ export default function Header() {
             {/* Toggle Mode Link */}
             <div className="mt-6 text-center">
               <span className="text-gray-400">
-                {isSignupMode ? 'Already have an account? ' : "Don't have an account? "}
+                {isSignupMode ? t('auth.alreadyHaveAccount') + ' ' : t('auth.dontHaveAccount') + ' '}
               </span>
               <button
                 onClick={toggleMode}
                 className="text-red-400 hover:text-red-300 font-medium"
               >
-                {isSignupMode ? 'Sign in' : 'Sign up'}
+                {isSignupMode ? t('auth.signIn') : t('auth.signup')}
               </button>
             </div>
           </div>

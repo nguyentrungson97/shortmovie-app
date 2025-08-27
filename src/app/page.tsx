@@ -6,37 +6,48 @@ import Hero from '@/components/Hero';
 import MovieSection from '@/components/MovieSection';
 import Footer from '@/components/Footer';
 import GenreFilter from '@/components/GenreFilter';
-import { categories, movies } from '@/data/movies';
+import { movies } from '@/data/movies';
+import { useLanguage } from '@/contexts/LanguageContext';
 
-export default function Home() {
-  const [selectedGenre, setSelectedGenre] = useState<string | null>(null);
-  
+export default function HomePage() {
+  const { t } = useLanguage();
+  const [selectedGenre, setSelectedGenre] = useState('all');
+
   // Get all unique genres
   const allGenres = useMemo(() => {
     const genres = new Set<string>();
     movies.forEach(movie => {
       movie.genres.forEach(genre => genres.add(genre));
     });
-    return Array.from(genres).sort();
+    return Array.from(genres);
   }, []);
-  
-  // Filter categories based on selected genre
-  const filteredCategories = useMemo(() => {
-    if (!selectedGenre) return categories;
-    
-    return categories.map(category => ({
-      ...category,
-      movies: category.movies.filter(movie => 
-        movie.genres.includes(selectedGenre)
-      )
-    })).filter(category => category.movies.length > 0);
+
+  // Filter movies by selected genre
+  const filteredMovies = useMemo(() => {
+    if (selectedGenre === 'all') return movies;
+    return movies.filter(movie => movie.genres.includes(selectedGenre));
   }, [selectedGenre]);
 
+  // Get featured movies for hero
+  const featuredMovies = useMemo(() => {
+    return movies.filter(movie => movie.isHot || movie.isNew || movie.isExclusive);
+  }, []);
+
+  // Get trending movies
+  const trendingMovies = useMemo(() => {
+    return movies.filter(movie => movie.isHot).slice(0, 10);
+  }, []);
+
+  // Get new releases
+  const newReleases = useMemo(() => {
+    return movies.filter(movie => movie.isNew).slice(0, 10);
+  }, []);
+
   return (
-    <main className="min-h-screen bg-black text-white">
+    <div className="min-h-screen bg-black">
       <Header />
       
-      <div className="mx-auto max-w-7xl px-4 py-8">
+      <main>
         <Hero />
         
         <GenreFilter
@@ -44,13 +55,32 @@ export default function Home() {
           selectedGenre={selectedGenre}
           onGenreChange={setSelectedGenre}
         />
-        
-        {filteredCategories.map((category) => (
-          <MovieSection key={category.id} category={category} />
-        ))}
-      </div>
-      
+
+        {selectedGenre === 'all' ? (
+          <>
+            <MovieSection
+              title={t('categories.trending')}
+              movies={trendingMovies}
+            />
+            <MovieSection
+              title={t('categories.newReleases')}
+              movies={newReleases}
+            />
+            <MovieSection
+              title={t('categories.exclusive')}
+              movies={movies.filter(movie => movie.isExclusive).slice(0, 10)}
+            />
+          </>
+        ) : (
+          <MovieSection
+            title={`${t('movie.genre')}: ${t(`genres.${selectedGenre.toLowerCase().replace(/\s+/g, '')}`) || selectedGenre}`}
+            movies={filteredMovies}
+            showViewAll={false}
+          />
+        )}
+      </main>
+
       <Footer />
-    </main>
+    </div>
   );
 }

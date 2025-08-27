@@ -1,45 +1,46 @@
+'use client';
+
 import { useState } from 'react';
-import { Filter } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface GenreFilterProps {
   genres: string[];
-  selectedGenre: string | null;
-  onGenreChange: (genre: string | null) => void;
+  selectedGenre: string;
+  onGenreChange: (genre: string) => void;
 }
 
 export default function GenreFilter({ genres, selectedGenre, onGenreChange }: GenreFilterProps) {
+  const { t } = useLanguage();
+
   return (
-    <div className="mb-6">
-      <div className="flex items-center gap-3 mb-4">
-        <Filter className="h-5 w-5 text-gray-400" />
-        <h3 className="text-lg font-semibold text-white">Filter by Genre</h3>
-      </div>
-      
-      <div className="flex flex-wrap gap-2">
-        <button
-          onClick={() => onGenreChange(null)}
-          className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-            selectedGenre === null
-              ? 'bg-purple-600 text-white'
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-          }`}
-        >
-          All
-        </button>
-        
-        {genres.map((genre) => (
+    <div className="mb-8">
+      <div className="mx-auto max-w-7xl px-4">
+        <h3 className="mb-4 text-lg font-semibold text-white">{t('movie.genre')}</h3>
+        <div className="flex flex-wrap gap-3">
           <button
-            key={genre}
-            onClick={() => onGenreChange(genre)}
+            onClick={() => onGenreChange('all')}
             className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
-              selectedGenre === genre
-                ? 'bg-purple-600 text-white'
-                : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
+              selectedGenre === 'all'
+                ? 'bg-red-600 text-white'
+                : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
             }`}
           >
-            {genre}
+            {t('common.all')}
           </button>
-        ))}
+          {genres.map((genre) => (
+            <button
+              key={genre}
+              onClick={() => onGenreChange(genre)}
+              className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+                selectedGenre === genre
+                  ? 'bg-red-600 text-white'
+                  : 'bg-gray-800 text-gray-300 hover:bg-gray-700 hover:text-white'
+              }`}
+            >
+              {t(`genres.${genre.toLowerCase().replace(/\s+/g, '')}`) || genre}
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
